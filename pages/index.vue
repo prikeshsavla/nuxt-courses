@@ -3,7 +3,7 @@
     <div>
       <logo />
       <h1 class="title">
-        nuxt-promo-template
+        nuxt-promo-yourself
       </h1>
       <h2 class="subtitle">
         My super Nuxt.js project
