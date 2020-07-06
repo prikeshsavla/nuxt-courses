@@ -1,4 +1,3 @@
-
 module.exports = {
   mode: "universal",
   /*
@@ -28,7 +27,11 @@ module.exports = {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: [{ src: "~/plugins/filters" }],
+  plugins: [
+    { src: "~/plugins/filters" },
+    { src: "~/plugins/vuelidate" },
+    { src: "~/plugins/toasted", ssr: false },
+  ],
   /*
    ** Nuxt.js modules
    */
@@ -52,4 +55,5 @@ module.exports = {
      */
     extend(config, ctx) {},
   },
+  telemetry: false,
 };

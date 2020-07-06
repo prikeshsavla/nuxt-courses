@@ -6,12 +6,14 @@
       </nuxt-link>
       <!-- Adds click to open -->
       <!-- Adds active class -->
-      <a @click="() => {}"
-         role="button"
-         class="navbar-burger burger"
-         aria-label="menu"
-         aria-expanded="false"
-         data-target="navbarBasicExample">
+      <a
+        @click="() => {}"
+        role="button"
+        class="navbar-burger burger"
+        aria-label="menu"
+        aria-expanded="false"
+        data-target="navbarBasicExample"
+      >
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
@@ -19,8 +21,7 @@
     </div>
 
     <!-- Adds active class -->
-    <div id="navbarBasicExample"
-         class="navbar-menu">
+    <div id="navbarBasicExample" class="navbar-menu">
       <div class="navbar-start">
         <nuxt-link to="/" class="navbar-item">
           Home
@@ -37,26 +38,32 @@
         <nuxt-link to="#" class="navbar-item">
           Cv
         </nuxt-link>
+        <nuxt-link to="instructor" class="navbar-item">
+          Instructor
+        </nuxt-link>
+        <nuxt-link to="secret" class="navbar-item">
+          Secret
+        </nuxt-link>
       </div>
 
       <div class="navbar-end">
         <div class="navbar-item">
           <div class="buttons">
             <!-- If Authenticated -->
-            <template v-if="false">
+            <template v-if="isAuth">
               <figure class="image avatar is-48x48 m-r-sm">
-                <img class="is-rounded" src="https://upload.wikimedia.org/wikipedia/commons/6/67/User_Avatar.png">
+                <img class="is-rounded" :src="user.avatar" />
               </figure>
-              <div class="m-r-sm m-b-sm">
-                Welcome User!
-              </div>
+              <div class="m-r-sm m-b-sm">Welcome {{ user.username }}!</div>
               <!-- If Admin -->
               <button
-                 v-if="true" class="button is-link is-outlined"
-                 @click="() => {}">
+                v-if="isAdmin"
+                class="button is-link is-outlined"
+                @click="() => {}"
+              >
                 Instructor
               </button>
-              <a class="button is-primary" @click="() => {}">
+              <a class="button is-primary" @click="logout">
                 Logout
               </a>
             </template>
@@ -75,16 +82,42 @@
   </nav>
 </template>
 
+<script>
+import { mapGetters } from "vuex";
+export default {
+  computed: {
+    ...mapGetters({
+      user: "auth/authUser",
+      isAuth: "auth/isAuthenticated",
+      isAdmin: "auth/isAdmin",
+    }),
+  },
+  methods: {
+    logout() {
+      this.$store
+        .dispatch("auth/logout")
+        .then((result) => {
+          if (result === true) {
+            this.$router.push("/login");
+          }
+        })
+        .catch((error) => {
+          this.$toasted.error("Some Error Occured");
+        });
+    },
+  },
+};
+</script>
 
 <style lang="scss" scoped>
-  .brand-title {
-    font-size: 35px;
-    font-weight: bold;
-  }
-  .navbar-brand {
-    padding-right: 30px;
-  }
-  .avatar {
-    margin-right: 5px;
-  }
+.brand-title {
+  font-size: 35px;
+  font-weight: bold;
+}
+.navbar-brand {
+  padding-right: 30px;
+}
+.avatar {
+  margin-right: 5px;
+}
 </style>
